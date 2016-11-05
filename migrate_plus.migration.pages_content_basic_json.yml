@@ -1,0 +1,44 @@
+# This migration shows importing from a single JSON file.
+id: pages_content_basic_json
+label: JSON Migration Basic
+migration_group: default
+source:
+  plugin: url
+  urls: "http://local.drupal82.dev/migration_files/pages_content_basic.json"
+  data_fetcher_plugin: http
+  data_parser_plugin: json
+  item_selector: 2
+
+  fields:
+    -
+      name: page_title
+      label: 'Page Title'
+      selector: title
+    -
+      name: id
+      label: 'Unique Id'
+      selector: id
+    -
+      name: page_body
+      label: 'Page Body'
+      selector: body
+
+  ids:
+    id:
+      type: string
+
+
+process:
+  title: page_title
+  'body/value': page_body
+  'body/format':
+    plugin: default_value
+    default_value: basic_html
+  type:
+    plugin: default_value
+    default_value: page
+
+
+destination:
+  plugin: entity:node
+migration_dependencies: {}
